@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="input-output-wrapper">
+            <textarea id="input-box" style="width: 100%;"></textarea>
+        </div>
+        <div>
+            <button id="submit-button">Tell Me More</button>
+        </div>
+        <div id="output-container" class="input-output-wrapper"></div>
+        <div id="vote-buttons">
+            <button id="upvote-button">👍</button>
+            <button id="downvote-button">👎</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let currentInput = "";
+        let currentOutput = "";
+
+        document.getElementById("submit-button").addEventListener("click", () => {
+            const text_input = document.getElementById("input-box").value;
+            currentInput = text_input;
+            $.post("/process", { text_input: text_input }, (data) => {
+                document.getElementById("output-container").innerHTML = data.result;
+                currentOutput = data.result;
+            });
+        });
+
+        document.getElementById("upvote-button").addEventListener("click", () => {
+            $.post("/vote", { input_text: currentInput, output_text: currentOutput, vote: "up" }, (data) => {
+                console.log(data.message);
+            });
+        });
+
+        document.getElementById("downvote-button").addEventListener("click", () => {
+            $.post("/vote", { input_text: currentInput, output_text: currentOutput, vote: "down" }, (data) => {
+                console.log(data.message);
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
