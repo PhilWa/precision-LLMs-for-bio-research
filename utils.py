@@ -29,8 +29,11 @@ def render_abstract_ranking(df, top_id) -> str:
     return output
 
 
-def calc_embeddings(ans: str = "serine is important for cancer metabolism"):
-    model = SentenceTransformer("all-mpnet-base-v2")
+def calc_embeddings(ans: str = "serine is important for cancer metabolism", model_name:str='bert'):
+    if model_name == 'bert':
+        model = SentenceTransformer("all-mpnet-base-v2")
+    elif model_name == 'sci-bert':
+        model = SentenceTransformer("allenai/scibert_scivocab_uncased")
     return model.encode(ans)
 
 
@@ -60,4 +63,14 @@ def get_data(data: str):
     if data == "abstracts_v2":
         db_name = "collections.sqlite"
         table_name = "bioarchive_abstracts"
+        return read_dataframe_from_sqlite(db_name, table_name)
+    
+    if data == "bio_axv_preprints":
+        db_name = "collections.sqlite"
+        table_name = "preprints"
+        return read_dataframe_from_sqlite(db_name, table_name)
+    
+    if data == "bio_axv_embeddings":
+        db_name = "collections.sqlite"
+        table_name = "embeddings"
         return read_dataframe_from_sqlite(db_name, table_name)
