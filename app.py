@@ -34,12 +34,13 @@ def index():
 def process_text():
     text_input = request.form["text_input"]
     value = enhance_prompt(text_input)
-    if 'chatgpt' in text_input.lower():
-        value = value.replace('chatgpt', "")
-        ans = chatbot_response(value)
-    else:
+    if 'biogpt' in text_input.lower():
+        value = value.replace('biogpt', "")
         ans = get_answer(value)[0].get("generated_text")
-    ans += add_ref(ans, top_n=2)
+
+    else:
+        ans = chatbot_response(value)
+        ans += add_ref(ans, top_n=2)
 
     markdown_text = markdown.markdown(ans)
     markdown_text = markdown_text.replace("<a ", '<a target="_blank" ')
