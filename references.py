@@ -17,15 +17,9 @@ def add_references(ans:str, top_n:int):
 
 
 def add_ref(ans: str, top_n:int):
-    ans_embeddings = calc_embeddings(ans)
-    abs_embeddings = get_data('abstract_embeddings_v2')
+    ans_embeddings = calc_embeddings(ans, 'bert')
+    abs_embeddings = get_data('bio_axv_embeddings')
     similarities = distance_between_vector_and_vectors(ans_embeddings, abs_embeddings)
-    abstracts = get_data('abstracts_v2')
+    abstracts = get_data('bio_axv_preprints')
     top_id = (-similarities).argsort()[:top_n]
     return render_abstract_ranking(abstracts, top_id)
-
-
-
-
-
-
