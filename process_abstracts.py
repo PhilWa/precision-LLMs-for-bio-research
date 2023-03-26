@@ -1,13 +1,6 @@
 from sentence_transformers import SentenceTransformer
 import pandas as pd
 
-if False:
-    model = SentenceTransformer("all-mpnet-base-v2")
-
-    abstracts = pd.read_excel("data/abstracts/Book1.xlsx")
-    abstract_embedding = model.encode(abstracts.abstract.to_list())
-    pd.DataFrame(abstract_embedding).to_csv("data/abstracts/abstract_embeddings.csv")
-
 
 import os
 import json
