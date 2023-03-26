@@ -34,6 +34,8 @@ def calc_embeddings(ans: str = "serine is important for cancer metabolism", mode
         model = SentenceTransformer("all-mpnet-base-v2")
     elif model_name == 'sci-bert':
         model = SentenceTransformer("allenai/scibert_scivocab_uncased")
+    else:
+        1/0
     return model.encode(ans)
 
 
@@ -65,12 +67,29 @@ def get_data(data: str):
         table_name = "bioarchive_abstracts"
         return read_dataframe_from_sqlite(db_name, table_name)
     
-    if data == "bio_axv_preprints":
+    if data == 'bio_axv_preprints':
         db_name = "collections.sqlite"
         table_name = "preprints"
         return read_dataframe_from_sqlite(db_name, table_name)
     
-    if data == "bio_axv_embeddings":
-        db_name = "collections.sqlite"
-        table_name = "embeddings"
-        return read_dataframe_from_sqlite(db_name, table_name)
+    if data == 'bio_axv_embeddings':
+
+            # Replace 'your_database.db' with the path to your SQLite database file
+            db_path = "collections.sqlite"
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Replace 'your_table_name' with the name of the table containing columns a and b
+            query = 'SELECT embedding FROM embeddings'
+            cursor.execute(query)
+
+            # Fetch binary data from column b
+            binary_data = cursor.fetchall()
+
+            # Close the connection
+            conn.close()
+
+            # Convert binary data to NumPy array
+            numpy_arrays = [np.frombuffer(row[0], dtype=np.float32) for row in binary_data]
+            return np.array(numpy_arrays)
+        
