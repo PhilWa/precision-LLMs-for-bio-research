@@ -39,6 +39,10 @@ def read_dataframe_from_sqlite(db_name, table_name):
         df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
     return df
 
+def write_dataframe_to_sqlite(df, db_name, table_name):
+    with sqlite3.connect(db_name) as conn:
+        df.to_sql(table_name, conn, if_exists='replace', index=False)
+        print(f"DataFrame written to SQLite database '{db_name}' in table '{table_name}'.")
 
 def get_data(data: str):
     if data == "abstract_embeddings":
