@@ -41,7 +41,7 @@ for i in tqdm(range(last_index, max_n, 100)):
     data = response.json()
 
     for entry in data["collection"]:
-        c.execute('''INSERT INTO preprints VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+        c.execute('''INSERT INTO preprints VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
             entry.get("preprint_doi", ""),
             entry.get("published_doi", ""),
             entry.get("published_journal", ""),
@@ -53,7 +53,9 @@ for i in tqdm(range(last_index, max_n, 100)):
             entry.get("published_date", ""),
             entry.get("preprint_abstract", ""),
             entry.get("preprint_author_corresponding", ""),
-            entry.get("preprint_author_corresponding_institution", "")
+            entry.get("preprint_author_corresponding_institution", ""),
+            entry.get("url", ""),
+            entry.get("citation", ""),
         ))
 
     conn.commit()
@@ -113,7 +115,9 @@ def load_embeddings_from_db(con, doi_list):
     return np.array(embeddings)
 
 # Initialize the model
-model = SentenceTransformer("allenai/scibert_scivocab_uncased")
+#model = SentenceTransformer("allenai/scibert_scivocab_uncased")
+model = SentenceTransformer("all-mpnet-base-v2")
+
 
 # Set up the SQLite database
 db_file = "collections.sqlite"
