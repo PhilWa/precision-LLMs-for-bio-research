@@ -1,6 +1,8 @@
 import requests
 import sqlite3
 from tqdm import tqdm
+from utils import (read_dataframe_from_sqlite,
+                   write_dataframe_to_sqlite)
 
 print("--------- Scraping bioaxv------------")
 def read_last_index():
@@ -58,9 +60,27 @@ for i in tqdm(range(last_index, max_n, 100)):
     write_last_index(i)
 
 conn.close()
+print("--------- Scraped bioaxv------------")
+print("--------- Format database ---------")
 
+df = read_dataframe_from_sqlite("collections.sqlite", "preprints")
 
-print("--------- Scraping Calculating Embeddings------------")
+# Formatting to make the format compatible with references.py def add_references
+df['url'] = 'https://doi.org/'+df['published_doi']
+
+df['citation'] = (df['preprint_title']
+                  + ' in '
+                  + df['published_journal'] 
+                  + ' - Lab: ' 
+                  + df['preprint_author_corresponding'] 
+                  + ' - Institution: ' 
+                  + df['preprint_author_corresponding_institution']
+                  )
+
+write_dataframe_to_sqlite(df, 'collections.sqlite', 'preprints')
+print("--------- Formatted database ---------")
+
+print("--------- Calculating Abstract Embeddings ------------")
 import sqlite3
 import numpy as np
 import pandas as pd
@@ -125,4 +145,5 @@ for i in tqdm(range(num_chunks)):
 
 # Close the database connection
 con.close()
-print("--------- End -----------")
+print("--------- Calculated Abstract Embeddings -----------")
+print("--------- End of scrape_bioaxv.py script -----------")
