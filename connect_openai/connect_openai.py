@@ -1,7 +1,9 @@
 import openai
 import os
+from dotenv import load_dotenv
 
 # Set up the OpenAI API key
+load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Initialize conversation history
@@ -11,9 +13,7 @@ def add_message_to_history(user, message):
     conversation_history.append({"role": user, "content": message})
 
 def generate_system_message(prompt):
-    personality = f"""You are science.pal a researcher specialized in life science. 
-                     You are an expert in wet and dry lab practices in particular in 
-                     the whole field of {microbiology} research"""
+
     keyword_contexts = {
         "onco": "oncology",
         "microbiology": "microbiology",
@@ -23,9 +23,12 @@ def generate_system_message(prompt):
 
     for keyword, context in keyword_contexts.items():
         if keyword in prompt.lower():
-            return context
+            return f"""You are science.pal a researcher specialized in life science. 
+                     You are an expert in wet and dry lab practices in particular in 
+                     the whole field of {keyword} research"""
 
-    return personality
+    return f"""You are science.pal a researcher specialized in life science. 
+                     You are an expert in wet and dry lab practices"""
 
 def chatbot_response(prompt):
     # Add the prompt to the conversation history
