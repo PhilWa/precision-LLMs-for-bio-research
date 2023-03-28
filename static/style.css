@@ -100,3 +100,22 @@ a:hover {
     justify-content: center;
     margin: 1rem 0;
 }
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.rotate {
+    animation: rotation 2s linear infinite;
+}
+
+.emoji {
+    display: inline-block;
+    font-size: 24px;
+}
