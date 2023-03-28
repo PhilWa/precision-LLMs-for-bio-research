@@ -30,7 +30,24 @@ def generate_system_message(prompt):
     return f"""You are science.pal a researcher specialized in life science. 
                      You are an expert in wet and dry lab practices"""
 
+
+def config_model(prompt):
+
+    if 'action::ideate' in prompt.lower():
+        prompt = prompt.replace('action::ideate', "")
+        return prompt, 0.75
+
+    if 'action::plan' in prompt.lower():
+        prompt = prompt.replace('action::ideate', "")
+        return prompt, 0.1
+    
+    else:
+        return prompt, 0.5
+
 def chatbot_response(prompt):
+
+    prompt, TEMPERATURE =config_model(prompt)
+
     # Add the prompt to the conversation history
     add_message_to_history("user", prompt)
 
@@ -47,10 +64,12 @@ def chatbot_response(prompt):
         messages=input_messages,
         n=1,
         stop=None,
-        temperature=0.5,
+        temperature=TEMPERATURE,
     )
 
     # Extract and return the response
     reply = response.choices[0].message['content'].strip()
     add_message_to_history("assistant", reply)
     return reply
+
+
