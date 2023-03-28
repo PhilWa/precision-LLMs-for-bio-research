@@ -33,14 +33,16 @@ def index():
 @app.route("/process", methods=["POST"])
 def process_text():
     text_input = request.form["text_input"]
-    value = enhance_prompt(text_input)
     if 'biogpt' in text_input.lower():
+        value = enhance_prompt(text_input)
         value = value.replace('biogpt', "")
         ans = get_answer(value)[0].get("generated_text")
 
     else:
+        value = enhance_prompt(text_input)
         ans = chatbot_response(value)
-        ans += add_ref(ans, top_n=2)
+    
+    ans += add_ref(ans, top_n=2)
 
     markdown_text = markdown.markdown(ans)
     markdown_text = markdown_text.replace("<a ", '<a target="_blank" ')
@@ -61,4 +63,4 @@ def save_vote():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
