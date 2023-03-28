@@ -24,8 +24,8 @@ def generate_system_message(prompt):
     for keyword, context in keyword_contexts.items():
         if keyword in prompt.lower():
             return f"""You are science.pal a researcher specialized in life science. 
-                     You are an expert in wet and dry lab practices in particular in 
-                     the whole field of {keyword} research"""
+                     You are an expert in wet and dry lab work in particular in 
+                     the field of {keyword}"""
 
     return f"""You are science.pal a researcher specialized in life science. 
                      You are an expert in wet and dry lab practices"""
@@ -34,11 +34,12 @@ def generate_system_message(prompt):
 def config_model(prompt):
 
     if 'action::ideate' in prompt.lower():
+        # TODO have a fun for prompt replace with logging.
         prompt = prompt.replace('action::ideate', "")
         return prompt, 0.75
 
     if 'action::plan' in prompt.lower():
-        prompt = prompt.replace('action::ideate', "")
+        prompt = prompt.replace('action::plan', "")
         return prompt, 0.1
     
     else:
