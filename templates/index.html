@@ -14,7 +14,7 @@
             <textarea id="input-box" style="width: 100%;"></textarea>
         </div>
         <div>
-            <button id="submit-button">Tell Me More</button>
+            <button id="submit-button"><span class="emoji">🔬</span></button>
         </div>
         <div id="output-container" class="input-output-wrapper"></div>
         <div id="vote-buttons">
@@ -28,12 +28,22 @@
         let currentInput = "";
         let currentOutput = "";
 
+        function startRotation() {
+            document.querySelector(".emoji").classList.add("rotate");
+        }
+
+        function stopRotation() {
+            document.querySelector(".emoji").classList.remove("rotate");
+        }
+
         document.getElementById("submit-button").addEventListener("click", () => {
             const text_input = document.getElementById("input-box").value;
             currentInput = text_input;
+            startRotation();
             $.post("/process", { text_input: text_input }, (data) => {
                 document.getElementById("output-container").innerHTML = data.result;
                 currentOutput = data.result;
+                stopRotation();
             });
         });
 
@@ -48,9 +58,8 @@
                 console.log(data.message);
             });
         });
-
-
     </script>
+
 </body>
 
 </html>
