@@ -67,12 +67,13 @@ def get_data(data: str):
         table_name = "bioarchive_abstracts"
         return read_dataframe_from_sqlite(db_name, table_name)
     
-    if data == 'bio_axv_preprints':
+    if data == 'bio_axv_preprints_microbiology':
         db_name = "collections.sqlite"
         table_name = "preprints"
-        return read_dataframe_from_sqlite(db_name, table_name)
+        with sqlite3.connect(db_name) as conn:
+            return pd.read_sql_query(f"SELECT * FROM {table_name} WHERE preprint_category=='microbiology'", conn)
     
-    if data == 'bio_axv_embeddings':
+    if data == 'bio_axv_embeddings_microbiology':
 
             # Replace 'your_database.db' with the path to your SQLite database file
             db_path = "collections.sqlite"
@@ -80,7 +81,10 @@ def get_data(data: str):
             cursor = conn.cursor()
 
             # Replace 'your_table_name' with the name of the table containing columns a and b
-            query = 'SELECT embedding FROM embeddings'
+            query = """SELECT embedding 
+                        FROM embeddings 
+                        INNER JOIN (SELECT published_doi FROM preprints WHERE preprint_category=="microbiology") AS temp
+                        ON embeddings.doi = temp.published_doi"""
             cursor.execute(query)
 
             # Fetch binary data from column b
@@ -92,4 +96,4 @@ def get_data(data: str):
             # Convert binary data to NumPy array
             numpy_arrays = [np.frombuffer(row[0], dtype=np.float32) for row in binary_data]
             return np.array(numpy_arrays)
-        
+
