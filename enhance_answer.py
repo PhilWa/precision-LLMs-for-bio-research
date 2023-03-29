@@ -36,3 +36,61 @@ def enhance_prompt(words: str) -> str:
             ans += [word]
 
     return " ".join(ans)
+
+
+import sqlite3
+from typing import Dict, List
+
+
+def find_words_in_fts(
+    sentence: str, db_name: str, fts_table: str
+) -> Dict[str, List[Dict]]:
+
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+
+    words = sentence.split()
+    word_results = {}
+
+    for word in words:
+        print(word)
+        cursor.execute(
+            f"""
+        SELECT * FROM {fts_table} WHERE {fts_table} MATCH ?
+        """,
+            (word,),
+        )
+        results = cursor.fetchall()
+        column_names = [desc[0] for desc in cursor.description]
+        formatted_results = [dict(zip(column_names, result)) for result in results]
+
+        ignore_list = [
+            "and",
+        ]
+        if word in ignore_list:
+            word_results[word] = [{}]
+
+        elif formatted_results:
+            # Without subsetting by organism formatted_results is too large
+            # As PoC selecting only the first hit is good enough
+            word_results[word] = formatted_results[0]
+        else:
+            word_results[word] = ""
+
+    conn.close()
+    return word_results
+
+
+def knowledge_to_prompt(word_value_pairs):
+    # Consumes output of find_words_in_fts
+    ans = ""
+    for k, v in word_value_pairs.items():
+        ans += k + " "
+        if isinstance(v, list) and len(v) == 1 and v[0] == {}:
+            continue
+        else:
+            temp = "with synonyms "
+            for kk, vv in v.items():
+                temp += kk + " : " + str(vv) + ", "
+            ans += temp
+    return ans
