@@ -3,6 +3,7 @@ from utils import build_knowledgebase
 ### Metabolites and proteins have the common key PathBank ID,
 ### In pathways the PathBank ID	is named SMPDB
 
+# TODO integrate BioNumbers.xls
 
 # Metabolite database
 COL_NAMES = [
