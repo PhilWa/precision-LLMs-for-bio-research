@@ -1,6 +1,7 @@
 # Lumyn
 
 ![Lumyn Logo](assets/logo.png)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Lumyn is a cutting-edge LLM (large language model) based tool designed to assist researchers in conducting awesome science. Our tool helps you streamline your research process, find relevant literature, generate research ideas, and much more.
 
