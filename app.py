@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from get_answer import get_answer
+from utils import get_answer
 from enhance_answer import enhance_prompt
 from references import add_references, add_ref
 from connect_openai.connect_openai import chatbot_response
@@ -33,15 +33,15 @@ def index():
 @app.route("/process", methods=["POST"])
 def process_text():
     text_input = request.form["text_input"]
-    if 'biogpt' in text_input.lower():
+    if "biogpt" in text_input.lower():
         value = enhance_prompt(text_input)
-        value = value.replace('biogpt', "")
+        value = value.replace("biogpt", "")
         ans = get_answer(value)[0].get("generated_text")
 
     else:
         value = enhance_prompt(text_input)
         ans = chatbot_response(value)
-    
+
     ans += add_ref(ans, top_n=2)
 
     markdown_text = markdown.markdown(ans)
