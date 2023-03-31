@@ -46,7 +46,7 @@ def map_keywords_to_groups(keywords):
     return mapped_groups
 
 
-def map_words_to_config(sentence: str):
+def convert_sentence_to_config(sentence: str):
 
     default_params = {
         "model_temperature": 0.5,
