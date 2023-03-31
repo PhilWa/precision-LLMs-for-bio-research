@@ -3,4 +3,10 @@
 
 A LLM (large language model) based tool designed to assist researchers in conducting awesome science. This tool helps you streamline your research process, find relevant literature, generate research ideas, and much MUCH more.
 
-Stay posted!
+Current features include:
+
+- Dynamic LLM type and parameter selection
+- Prompt enhancement via knowledge graph
+- Automatic paper proposal
+
+Stay posted for more :-)
