@@ -10,3 +10,5 @@ Current features include:
 - Automatic paper proposal
 
 Stay posted for more :-)
+
+For more info reach out to: philipp.warmer@gmail.com, leave an issue here or ping me on [Linkedin](https://www.linkedin.com/in/philippwarmer/) 
