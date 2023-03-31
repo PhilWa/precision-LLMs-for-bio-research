@@ -1,6 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
+from config_model import convert_sentence_to_config
 
 # Set up the OpenAI API key
 load_dotenv()
@@ -14,43 +15,16 @@ def add_message_to_history(user, message):
     conversation_history.append({"role": user, "content": message})
 
 
-def generate_system_message(prompt):
+def generate_system_message(model_params):
 
-    keyword_contexts = {
-        "onco": "oncology",
-        "microbiology": "microbiology",
-        "systemsbiology": "systemsbiology",
-        "cancer": "cancer",
-    }
-
-    for keyword, context in keyword_contexts.items():
-        if keyword in prompt.lower():
-            return f"""You are science.pal a researcher specialized in life science.
-                     You are an expert in wet and dry lab work in particular in 
-                     the field of {keyword}. Ask follow up questions after giving an concise answer"""
-
-    return f"""You are science.pal a researcher specialized in life science. 
-                     You are an expert in wet and dry lab practices. Ask follow up questions after giving an concise answer"""
-
-
-def config_model(prompt):
-
-    if "action::ideate" in prompt.lower():
-        # TODO have a fun for prompt replace with logging.
-        prompt = prompt.replace("action::ideate", "")
-        return prompt, 0.75
-
-    if "action::plan" in prompt.lower():
-        prompt = prompt.replace("action::plan", "")
-        return prompt, 0.1
-
-    else:
-        return prompt, 0.5
+    return f"""You are science.pal a researcher specialized in life science.
+                You are an expert in wet and dry lab work in particular in 
+                the field of {model_params.get('biology')}. Ask follow up questions after giving an concise answer"""
 
 
 def chatbot_response(prompt):
 
-    prompt, TEMPERATURE = config_model(prompt)
+    model_params = convert_sentence_to_config(prompt)
 
     # Add the prompt to the conversation history
     add_message_to_history("user", prompt)
@@ -67,11 +41,11 @@ def chatbot_response(prompt):
 
     # Call the API
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model=model_params.get("model_type"),
         messages=input_messages,
         n=1,
         stop=None,
-        temperature=TEMPERATURE,
+        temperature=model_params.get("model_temperature"),
     )
 
     # Extract and return the response
