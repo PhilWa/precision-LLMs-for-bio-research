@@ -108,9 +108,14 @@ def get_data(data: str):
         return np.array(numpy_arrays)
 
 
-def create_fts_table(db_name: str, table_name: str, column_name: List[str]) -> None:
+def create_fts_table(
+    db_name: str,
+    table_name: str,
+    column_name: List[str],
+    set_pk: str,
+) -> None:
     """
-    Create a Full-Text Search (FTS) table from a given pandas DataFrame.
+    Create a Full-Text Search (FTS) table, with a pk from a sqlite database
 
     Parameters
     ----------
@@ -120,6 +125,8 @@ def create_fts_table(db_name: str, table_name: str, column_name: List[str]) -> N
         Name of the table in the SQLite database.
     columns : list of str
         List of columns to include in the FTS table.
+    set_pk : str
+        Column name to use for connecting the two tables.
 
     Returns
     -------
@@ -136,25 +143,35 @@ def create_fts_table(db_name: str, table_name: str, column_name: List[str]) -> N
 
     fts_columns = ", ".join(column_name)
     cursor = conn.cursor()
+
     cursor.execute(
         f"""
-    CREATE VIRTUAL TABLE IF NOT EXISTS {table_name}_fts USING fts5({fts_columns});
+    DROP TABLE IF EXISTS {table_name}_fts;
     """
     )
     conn.commit()
 
     cursor.execute(
         f"""
-    INSERT INTO {table_name}_fts ({fts_columns})
-    SELECT {fts_columns} FROM {table_name};
+    CREATE VIRTUAL TABLE IF NOT EXISTS {table_name}_fts USING fts5({fts_columns}, {set_pk} UNINDEXED);
+    """
+    )
+    conn.commit()
+
+    cursor.execute(
+        f"""
+    INSERT INTO {table_name}_fts ({set_pk}, {fts_columns})
+    SELECT {set_pk}, {fts_columns} FROM {table_name};
     """
     )
     conn.commit()
     conn.close()
-    print("fts created")
+    print("fts with pk created")
 
 
-def build_knowledgebase(dir: str, db_name: str, table_name: str, column_names: str):
+def build_knowledgebase(
+    dir: str, db_name: str, table_name: str, column_names: str, set_pk: str
+):
     print(f"Start building from {dir} into {db_name} w/ table {table_name}")
     df = pd.read_csv(dir)
     df.columns = df.columns.str.replace(" ", "_")
@@ -162,7 +179,8 @@ def build_knowledgebase(dir: str, db_name: str, table_name: str, column_names: s
         # renaming Name to pathway name to not run into sql naming errors
         df.rename(columns={"Name": "pathway_name"}, inplace=True)
     write_dataframe_to_sqlite(df, db_name, table_name)
-    create_fts_table(db_name, table_name, column_names)
+    create_index_on_pk(db_name, table_name, set_pk)
+    create_fts_table(db_name, table_name, column_names, set_pk)
     print("------ Done ------")
 
 
@@ -177,3 +195,37 @@ def get_answer(prompt: str = "Glutamine can affect cancer metabolism by"):
     set_seed(42)
     # prompt = "Glutamine can affect cancer metabolism by"
     return generator(prompt, max_length=100, num_return_sequences=1, do_sample=True)
+
+
+import sqlite3
+
+
+def create_index_on_pk(db_name: str, table_name: str, pk_name: str) -> None:
+    """
+    Create an index on the primary key column of a table in a SQLite database.
+
+    Parameters
+    ----------
+    db_name : str
+        Name of the SQLite database file.
+    table_name : str
+        Name of the table in the SQLite database.
+    pk_name : str
+        Name of the primary key column in the table.
+
+    Returns
+    -------
+    None
+    """
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        f"""
+        CREATE INDEX IF NOT EXISTS {table_name}_pk_idx ON {table_name}("{pk_name}");
+        """
+    )
+    conn.commit()
+    conn.close()
+
+    print(f"Index created on primary key '{pk_name}' for table '{table_name}'")
