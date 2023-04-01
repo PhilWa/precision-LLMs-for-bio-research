@@ -20,6 +20,7 @@ build_knowledgebase(
     db_name="collections.sqlite",
     table_name="pathbank_all_metabolites",
     column_names=COL_NAMES,
+    set_pk="PathBank_ID",
 )
 
 # Protein database
@@ -37,6 +38,7 @@ build_knowledgebase(
     db_name="collections.sqlite",
     table_name="pathbank_all_proteins",
     column_names=COL_NAMES,
+    set_pk="PathBank_ID",
 )
 
 # Pathway database
@@ -49,4 +51,5 @@ build_knowledgebase(
     db_name="collections.sqlite",
     table_name="pathbank_pathways",
     column_names=COL_NAMES,
+    set_pk="SMPDB_ID",
 )
