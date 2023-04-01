@@ -1,7 +1,7 @@
-# precise LLM to enhance bio-research
+# precision LLM for enhanced life science research
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A LLM (large language model) based tool designed to assist researchers in conducting awesome science. This tool helps you streamline your research process, find relevant literature, generate research ideas, and much MUCH more.
+An application designed around LLMs (large language model) to assist researchers in doing their awesome science. This tool helps streamline the research process, find relevant literature, generate research ideas, and much MUCH more.
 
 Current features include:
 
