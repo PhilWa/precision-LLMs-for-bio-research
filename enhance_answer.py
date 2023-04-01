@@ -45,6 +45,13 @@ from typing import Dict, List
 def find_words_in_fts(
     sentence: str, db_name: str, fts_table: str
 ) -> Dict[str, List[Dict]]:
+    # We have two challenges:
+    # 1. Go through each word in sentence to find molecule and thus id and pythway info
+    # TODO We are missing the molecule id
+    # 2. Take a sentence and match all model organisms.
+    # Take the respective main group e.g. bacteria for e.coli
+    # use it to limit the search space in fts table
+    # TODO Extract matched model org. Save it and reduce search space
 
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
@@ -83,6 +90,7 @@ def find_words_in_fts(
 
 def knowledge_to_prompt(word_value_pairs):
     # Consumes output of find_words_in_fts
+    # injects them into prompt
     ans = ""
     for k, v in word_value_pairs.items():
         ans += k + " "
