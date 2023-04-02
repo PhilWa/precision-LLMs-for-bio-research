@@ -8,6 +8,7 @@ Current features include:
 - Dynamic LLM type and parameter selection
 - Prompt enhancement via knowledge graph
 - Automatic paper proposal
+- Add context: Give to get approach
 
 Stay posted for more :-)
 
