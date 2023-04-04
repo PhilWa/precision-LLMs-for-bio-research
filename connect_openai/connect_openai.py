@@ -1,7 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
-from config_model import convert_sentence_to_config
+from connect_openai.config_model import convert_sentence_to_config, groups
 
 # Set up the OpenAI API key
 load_dotenv()
@@ -19,18 +19,18 @@ def generate_system_message(model_params):
 
     return f"""You are science.pal a researcher specialized in life science.
                 You are an expert in wet and dry lab work in particular in 
-                the field of {model_params.get('biology')}. Ask follow up questions after giving an concise answer"""
+                the field of {model_params.get('biology', 'life science')}. Ask follow up questions after giving an concise answer"""
 
 
 def chatbot_response(prompt):
 
-    model_params = convert_sentence_to_config(prompt)
+    model_params = convert_sentence_to_config(prompt, groups)
 
     # Add the prompt to the conversation history
     add_message_to_history("user", prompt)
 
     # Generate system message based on keywords
-    system_message = generate_system_message(prompt)
+    system_message = generate_system_message(model_params)
     add_message_to_history("system", system_message)
 
     # Prepare input for the API by combining the conversation history
