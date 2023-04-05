@@ -13,7 +13,7 @@ Current features include:
 Next: 
 - Knowledge graph: Dynamically connect Metabolites with Pathways and Proteins for groups of model organisms
 - Add larger context via text upload OR linking
--- check out: https://github.com/openai/chatgpt-retrieval-plugin 
+  - to connect whole research corpus check out: https://github.com/openai/chatgpt-retrieval-plugin 
 
 Stay posted for more :-)
 
