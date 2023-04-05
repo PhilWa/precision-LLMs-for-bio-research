@@ -99,12 +99,6 @@ from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
 
-def read_dataframe_from_sqlite(db_name, table_name):
-    with sqlite3.connect(db_name) as conn:
-        df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-    return df
-
-
 df = read_dataframe_from_sqlite("collections.sqlite", "preprints")
 
 
