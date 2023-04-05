@@ -3,9 +3,16 @@ import pandas as pd
 import sqlite3
 from sentence_transformers import SentenceTransformer
 from typing import List
+from transformers import pipeline, set_seed
+from transformers import BioGptTokenizer, BioGptForCausalLM
 
 
-def distance_between_vector_and_vectors(vector1, vectors_array):
+def distance_between_vector_and_vectors(
+    vector1: np.ndarray, vectors_array: np.ndarray
+) -> np.ndarray:
+    """
+    Calculate the cosine similarities between a single vector and an array of vectors.
+    """
     dot_products = np.dot(vectors_array, vector1)
 
     # Calculate the magnitudes of all vectors in vectors_array
@@ -20,7 +27,10 @@ def distance_between_vector_and_vectors(vector1, vectors_array):
     return similarities
 
 
-def render_abstract_ranking(df, top_id) -> str:
+def render_abstract_ranking(df: pd.DataFrame, top_id: List[int]) -> str:
+    """
+    Render the ranking of abstracts in a markdown format with URLs and citations.
+    """
     df = df.iloc[list(top_id)][["url", "citation"]]
     output = ""
     cnt = 0
@@ -32,7 +42,10 @@ def render_abstract_ranking(df, top_id) -> str:
 
 def calc_embeddings(
     ans: str = "serine is important for cancer metabolism", model_name: str = "bert"
-):
+) -> np.ndarray:
+    """
+    Calculate the embeddings of a given text using the specified model.
+    """
     if model_name == "bert":
         model = SentenceTransformer("all-mpnet-base-v2")
     elif model_name == "sci-bert":
@@ -42,13 +55,19 @@ def calc_embeddings(
     return model.encode(ans)
 
 
-def read_dataframe_from_sqlite(db_name, table_name):
+def read_dataframe_from_sqlite(db_name: str, table_name: str) -> pd.DataFrame:
+    """
+    Read a DataFrame from an SQLite database table.
+    """
     with sqlite3.connect(db_name) as conn:
         df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
     return df
 
 
-def write_dataframe_to_sqlite(df, db_name, table_name):
+def write_dataframe_to_sqlite(df: pd.DataFrame, db_name: str, table_name: str) -> None:
+    """
+    Write a DataFrame to an SQLite database table.
+    """
     with sqlite3.connect(db_name) as conn:
         df.to_sql(table_name, conn, if_exists="replace", index=False)
         print(
@@ -57,6 +76,9 @@ def write_dataframe_to_sqlite(df, db_name, table_name):
 
 
 def get_data(data: str):
+    """
+    Retrieve specified data from a variety of sources.
+    """
     if data == "abstract_embeddings":
         path = "data/abstracts/abstract_embeddings.csv"
         return pd.read_csv(path).drop("Unnamed: 0", axis=1).values
@@ -84,20 +106,15 @@ def get_data(data: str):
             )
 
     if data == "bio_axv_embeddings_microbiology":
-
-        # Replace 'your_database.db' with the path to your SQLite database file
         db_path = "collections.sqlite"
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-
-        # Replace 'your_table_name' with the name of the table containing columns a and b
         query = """SELECT embedding 
                         FROM embeddings 
                         INNER JOIN (SELECT published_doi FROM preprints WHERE preprint_category=="microbiology") AS temp
                         ON embeddings.doi = temp.published_doi"""
         cursor.execute(query)
 
-        # Fetch binary data from column b
         binary_data = cursor.fetchall()
 
         # Close the connection
@@ -132,12 +149,6 @@ def create_fts_table(
     -------
     None
 
-
-    Future Development
-    ------------------
-    1. Add error handling and logging.
-    2. Support for additional FTS configurations (e.g., tokenizer, language, etc.).
-    3. Optimize performance for large data sets.
     """
     conn = sqlite3.connect(db_name)
 
@@ -170,8 +181,11 @@ def create_fts_table(
 
 
 def build_knowledgebase(
-    dir: str, db_name: str, table_name: str, column_names: str, set_pk: str
-):
+    dir: str, db_name: str, table_name: str, column_names: List[str], set_pk: str
+) -> None:
+    """
+    Build a knowledge base by processing a CSV file and storing it in an SQLite database table.
+    """
     print(f"Start building from {dir} into {db_name} w/ table {table_name}")
     df = pd.read_csv(dir)
     df.columns = df.columns.str.replace(" ", "_")
@@ -184,20 +198,16 @@ def build_knowledgebase(
     print("------ Done ------")
 
 
-from transformers import pipeline, set_seed
-from transformers import BioGptTokenizer, BioGptForCausalLM
-
-
-def get_answer(prompt: str = "Glutamine can affect cancer metabolism by"):
+def get_answer(prompt: str = "Glutamine can affect cancer metabolism by") -> List[str]:
+    """
+    Generate an answer to the given prompt using the BioGPT model.
+    """
     model = BioGptForCausalLM.from_pretrained("microsoft/biogpt")
     tokenizer = BioGptTokenizer.from_pretrained("microsoft/biogpt")
     generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
     set_seed(42)
     # prompt = "Glutamine can affect cancer metabolism by"
     return generator(prompt, max_length=100, num_return_sequences=1, do_sample=True)
-
-
-import sqlite3
 
 
 def create_index_on_pk(db_name: str, table_name: str, pk_name: str) -> None:
