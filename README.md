@@ -10,6 +10,10 @@ Current features include:
 - Automatic paper proposal
 - Add context: Give to get approach
 
+Next: 
+- Knowledge graph: Dyanically connect Metabolites with Pathways and Proteins for groups of model organisms
+- Add larger context via text upload OR linking
+
 Stay posted for more :-)
 
 For more info reach out to: philipp.warmer@gmail.com, leave an issue here on git or ping me on [Linkedin](https://www.linkedin.com/in/philippwarmer/) 
