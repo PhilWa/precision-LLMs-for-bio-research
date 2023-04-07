@@ -2,8 +2,8 @@ import re
 
 groups = {
     "model_temperature": {
-        ".1": ["protocol", "method"],
-        ".7": ["explore", "envision"],
+        0.1: ["protocol", "method"],
+        0.7: ["explore", "envision"],
     },
     "model_type": {
         "gpt-3.5-turbo": [
@@ -66,18 +66,3 @@ def get_model_params(mapped_groups, default_params):
         if isinstance(mapped_groups.get(k), dict):
             default_params[k] = next(iter(mapped_groups.get(k)))
     return default_params
-
-
-def config_model(prompt):
-    # TODO: Deprecate
-    if "action::ideate" in prompt.lower():
-        # TODO have a fun for prompt replace with logging.
-        prompt = prompt.replace("action::ideate", "")
-        return prompt, 0.75
-
-    if "action::plan" in prompt.lower():
-        prompt = prompt.replace("action::plan", "")
-        return prompt, 0.1
-
-    else:
-        return prompt, 0.5
