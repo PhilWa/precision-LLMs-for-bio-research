@@ -1,3 +1,9 @@
+# The idea is: We look for keyword in sentence.
+# If there is a match then flag the key and the nested key
+# The two keys can then have multiple usecases:
+# 1. Inform context info
+# 2. Dynamically subset knowledge graph
+
 common_cancer_cell_lines = [
     "HeLa",
     "MCF-7",
