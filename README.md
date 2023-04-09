@@ -1,7 +1,7 @@
 # precision LLM for enhanced life science research
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-An application designed around LLMs (large language model) to assist researchers in doing their awesome science. This tool helps streamline the research process, find relevant literature, generate research ideas, and much MUCH more.
+An application designed around LLMs (large language model) to assist researchers in doing their awesome science. This tool helps streamline the research process, find relevant literature, generate research ideas, and much more.
 
 Current features include:
 
@@ -15,6 +15,11 @@ Next:
 - Knowledge graph: Dynamically connect Metabolites with Pathways and Proteins for groups of model organisms
 - Add larger context via text upload OR linking
   - to connect whole research corpus check out: https://github.com/openai/chatgpt-retrieval-plugin 
+
+
+# Sneak peak:
+[peak](pictures/demo.png)
+
 
 Stay posted for more :-)
 
