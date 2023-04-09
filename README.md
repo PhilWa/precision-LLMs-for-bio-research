@@ -7,7 +7,7 @@ Current features include:
 
 - Dynamic LLM type and parameter selection
 - Automatic paper proposal
-- Add context: Give to get approach
+- Add context: the application understand whether you talk about microbiology or cancer and scopes the model accordingly.
 - Prompt enhancement via knowledge graph [WIP]
 
 
