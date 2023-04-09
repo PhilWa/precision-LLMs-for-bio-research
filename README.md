@@ -18,7 +18,7 @@ Next:
 
 
 # Sneak peak:
-[peak](pictures/demo.png)
+![](pictures/demo.png)
 
 
 Stay posted for more :-)
