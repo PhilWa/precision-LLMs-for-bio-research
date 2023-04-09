@@ -6,9 +6,10 @@ An application designed around LLMs (large language model) to assist researchers
 Current features include:
 
 - Dynamic LLM type and parameter selection
-- Prompt enhancement via knowledge graph
 - Automatic paper proposal
 - Add context: Give to get approach
+- Prompt enhancement via knowledge graph [WIP]
+
 
 Next: 
 - Knowledge graph: Dynamically connect Metabolites with Pathways and Proteins for groups of model organisms
