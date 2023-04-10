@@ -1,5 +1,6 @@
 # precision LLM for enhanced life science research
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![GitHub Actions status](https://github.com/PhilWa/precision-LLMs-for-bio-research/actions/workflows/main.yml/badge.svg)
 
 ![GitHub Actions status](https://github.com/<PhilWa>/<precision-LLMs-for-bio-research>/actions/workflows/<main.yml>/badge.svg)
 
