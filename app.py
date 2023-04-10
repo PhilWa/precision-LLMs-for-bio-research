@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from utils import get_answer
-from enhance_answer import enhance_prompt, enrich_metabolite_information
-from references import add_references, add_ref
-from connect_openai.connect_openai import chatbot_response
-import markdown
+from process_input import process_input
 import os
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///votes.db"
@@ -33,23 +30,7 @@ def index():
 @app.route("/process", methods=["POST"])
 def process_text():
     text_input = request.form["text_input"]
-    if "biogpt" in text_input.lower():
-        text_input = text_input.replace("biogpt", "")
-        value = enrich_metabolite_information(text_input)
-        print(value)
-
-        ans = get_answer(value)[0].get("generated_text")
-
-    else:
-        value = enrich_metabolite_information(text_input)
-        print(value)
-        ans = chatbot_response(value)
-
-    ans += "<br />"
-    ans += add_ref(ans, top_n=2)
-
-    markdown_text = markdown.markdown(ans)
-    markdown_text = markdown_text.replace("<a ", '<a target="_blank" ')
+    markdown_text = process_input(text_input)
     return jsonify({"result": markdown_text})
 
 
