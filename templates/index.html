@@ -36,7 +36,7 @@
             document.querySelector(".emoji").classList.remove("rotate");
         }
 
-        document.getElementById("submit-button").addEventListener("click", () => {
+        function processTextInput() {
             const text_input = document.getElementById("input-box").value;
             currentInput = text_input;
             startRotation();
@@ -45,6 +45,15 @@
                 currentOutput = data.result;
                 stopRotation();
             });
+        }
+
+        document.getElementById("submit-button").addEventListener("click", processTextInput);
+
+        document.getElementById("input-box").addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                processTextInput();
+            }
         });
 
         document.getElementById("upvote-button").addEventListener("click", () => {
