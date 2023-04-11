@@ -115,7 +115,7 @@
 
 <body>
     <div class="signup-form">
-        <form action="{{ url_for('signup') }}" method="post">
+        <form id="signup-form" action="{{ url_for('signup') }}" method="post">
             <h2>Join the Waitlist</h2>
             <p>By submitting this form, you will join our waitlist to get early access to Lumyn products.</p>
             <hr>
@@ -141,6 +141,32 @@
         <div class="hint-text">Tell your friends about us on <a href="twitter.com">Twitter</a> and <a
                 href="linkedin.com">Linkedin</a></div>
     </div>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            fetch('{{ url_for("signup") }}', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.querySelector('.signup-form form').innerHTML = `
+                            <h2>Added to our waitlist!</h2>
+                            <p>We will now take you back</p>
+                        `;
+                        setTimeout(() => {
+                            window.location.href = '{{ url_for("landing") }}';
+                        }, 4000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
 </body>
 
 </html>
