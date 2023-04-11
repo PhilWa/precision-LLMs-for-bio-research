@@ -15,10 +15,12 @@ class WaitlistEntry(db.Model):
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=True)
     email = db.Column(db.String(120), nullable=False)
+    remark = db.Column(db.String(80), nullable=True)
+
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"<WaitlistEntry {self.first_name} {self.last_name} {self.email}>"
+        return f"<WaitlistEntry {self.first_name} {self.last_name} {self.email} {self.remark}>"
 
 
 @app.route("/")
@@ -32,9 +34,12 @@ def signup():
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
         email = request.form.get("email")
+        remark = request.form.get("optional_text")
 
         # Save the data to the database
-        entry = WaitlistEntry(first_name=first_name, last_name=last_name, email=email)
+        entry = WaitlistEntry(
+            first_name=first_name, last_name=last_name, email=email, remark=remark
+        )
         db.session.add(entry)
         db.session.commit()
 
