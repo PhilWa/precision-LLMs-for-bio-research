@@ -1,0 +1,56 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Lumyn - AI Research Assistant{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    .center-screen {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100%;
+    }
+
+    .button-link {
+        text-decoration: none;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        border-radius: 0.25rem;
+        margin-top: 20rem;
+    }
+
+    .button-link:hover {
+        background-color: #0056b3;
+        color: white;
+        text-decoration: none;
+    }
+
+    h1 {
+        font-size: 6rem;
+    }
+
+    p {
+        font-size: 3rem;
+    }
+</style>
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="center-screen">
+    <h1>Lumyn</h1>
+    <p>AI Research Assistant</p>
+    <a href="/signup" class="button-link">Join the Waitlist</a>
+</div>
+{% endblock %}

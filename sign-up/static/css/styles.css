@@ -1,0 +1,20 @@
+body {
+    background-color: #222;
+    color: #f8f9fa;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    background-color: #343a40;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #5c5c5c;
+    border-color: #5c5c5c;
+}
