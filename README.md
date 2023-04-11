@@ -18,8 +18,11 @@ Next:
 - Add larger context via text upload OR linking
   - to connect whole research corpus check out: https://github.com/openai/chatgpt-retrieval-plugin 
 
+Remark:
+Any development after the waitlist will happen in a private repo.
+This repo will stay.
 
-# Sneak peak:
+## Sneak peak:
 ![](pictures/demo.png)
 
 
