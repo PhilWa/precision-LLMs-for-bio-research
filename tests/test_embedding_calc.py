@@ -62,3 +62,7 @@ def test_sentence_similarity_sci_bert():
 
     # Check if the similarity between sentence1 and sentence2 is greater than the similarity between sentence1 and sentence3
     assert similarity12 > similarity13
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])
