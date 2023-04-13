@@ -4,7 +4,7 @@ from nltk.corpus import wordnet
 from transformers import MarianMTModel, MarianTokenizer
 from typing import Tuple
 
-# Off the shelve text data augmentation.
+
 def augment_text(text: str, augmentations: int = 2) -> str:
     """
     Augments the input text by applying a randomly selected augmentation method.
@@ -25,7 +25,16 @@ def augment_text(text: str, augmentations: int = 2) -> str:
             back_translate,
         ]
         selected_method = random.choice(augmentation_methods)
-        augmented_text = selected_method(augmented_text)
+        if selected_method == back_translate:
+            augmented_text = back_translate(
+                augmented_text,
+                tokenizer_en_fr,
+                model_en_fr,
+                tokenizer_fr_en,
+                model_fr_en,
+            )
+        else:
+            augmented_text = selected_method(augmented_text)
     return augmented_text
 
 
