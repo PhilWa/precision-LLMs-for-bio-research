@@ -2,7 +2,7 @@ import re
 
 groups = {
     "model_temperature": {
-        0.1: ["protocol", "method"],
+        0.1: ["protocol", "method", "list", "report"],
         0.7: ["explore", "envision"],
     },
     "model_type": {
@@ -14,8 +14,10 @@ groups = {
         ],
     },
     "biology": {
-        "microbiology": ["e.coli", "escherichia coli", "bacteria"],
-        "cancer": ["oncology", "tumor"],
+        # Ideally we want to do a similiarty based classification of topics
+        "microbiology": ["e.coli", "escherichia coli", "bacteria", "microbiology"],
+        "cancer": ["oncology", "tumor", "cancer"],
+        "neurobiology": ["neurobiology", "neuron"],
     },
 }
 # Function to process the sentence and extract keywords
