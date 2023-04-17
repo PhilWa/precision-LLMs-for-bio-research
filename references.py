@@ -33,3 +33,10 @@ def add_ref(ans: str, top_n: int):
     abstracts = get_data("bio_axv_preprints_microbiology")
     top_id = (-similarities).argsort()[:top_n]
     return render_abstract_ranking(abstracts, top_id)
+
+
+def identify_domain(sentence: str):
+    # Match content from config_knowledgegraph to
+    # 1. subset literature
+    # 2. provide context information
+    return None
