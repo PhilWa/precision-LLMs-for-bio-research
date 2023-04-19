@@ -1,6 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
+import pandas as pd
 
 # Set up the OpenAI API key
 load_dotenv()
@@ -22,14 +23,43 @@ def generate_system_message(model_params):
                 Always Always ask follow up questions and propose how you can further be of assistance."""
 
 
-def chatbot_response(prompt, model_params):
-
+def chatbot_response(prompt: str, model_params: dict, abstracts: pd.DataFrame):
     # Generate system message based on keywords
     system_message = generate_system_message(model_params)
     add_message_to_history("system", system_message)
 
-    # Add the prompt to the conversation history
-    add_message_to_history("user", prompt)
+    # Here we need to inject the abstracts and weave them into the prompt
+    context_instruction = " Restate the question while considering: "
+    context_information = "you also consider: ".join(
+        abstracts.preprint_abstract.to_list()
+    )
+    spiked_prompt = prompt + context_instruction + context_information
+
+    temp_conversation_history = conversation_history.copy()
+    temp_conversation_history.append({"role": "user", "content": spiked_prompt})
+
+    temp_message = [
+        {"role": message["role"], "content": message["content"]}
+        for message in temp_conversation_history
+    ]
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0301",
+        messages=temp_message,
+        n=1,
+        stop=None,
+        temperature=0.2,
+    )
+
+    reply = response.choices[0].message["content"].strip()
+
+    # Pre-pend the initial question, to maintain a sharp answer:
+    reply = prompt + " " + reply
+
+    # Now we pretend the chatgpt propmt is actually from the user
+    add_message_to_history("user", reply)
+    print(reply)
+
     # Prepare input for the API by combining the conversation history
     input_messages = [
         {"role": message["role"], "content": message["content"]}

@@ -1,7 +1,7 @@
 from enhance_answer import enrich_metabolite_information
 from connect_openai.connect_openai import chatbot_response
-from references import add_ref
-from utils import get_answer
+from references import select_ref
+from utils import get_answer, render_abstract_ranking
 from connect_openai.config_model import convert_sentence_to_config, groups
 import markdown
 
@@ -23,6 +23,7 @@ def process_input(text_input: str) -> str:
 
     if "biogpt" in text_input.lower():
         text_input = text_input.replace("biogpt", "")
+        abstracts = select_ref(text_input, 2)
         text_input = enrich_metabolite_information(text_input)
         ans = get_answer(text_input)[0].get("generated_text")
 
@@ -30,11 +31,13 @@ def process_input(text_input: str) -> str:
         print("chatgpt")
         # return model params
         model_params = convert_sentence_to_config(text_input, groups)
+        abstracts = select_ref(text_input, 2)
         value = enrich_metabolite_information(text_input)
-        ans = chatbot_response(value, model_params)
+        ans = chatbot_response(value, model_params, abstracts)
 
     ans += "<br />"
     # add model params with general category to do dynamic scoping of literature.
-    ans += add_ref(ans, top_n=2)
+    citation = render_abstract_ranking(abstracts)
+    ans += citation
 
     return markdownify(ans)

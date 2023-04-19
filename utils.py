@@ -27,11 +27,11 @@ def distance_between_vector_and_vectors(
     return similarities
 
 
-def render_abstract_ranking(df: pd.DataFrame, top_id: List[int]) -> str:
+def render_abstract_ranking(df: pd.DataFrame) -> str:
     """
     Render the ranking of abstracts in a markdown format with URLs and citations.
     """
-    df = df.iloc[list(top_id)][["url", "citation"]]
+    df = df[["url", "citation"]]
     output = ""
     cnt = 0
     for idx, row in df.iterrows():
@@ -75,7 +75,7 @@ def write_dataframe_to_sqlite(df: pd.DataFrame, db_name: str, table_name: str) -
         )
 
 
-def get_data(data: str):
+def get_data(data: str, *arg):
     """
     Retrieve specified data from a variety of sources.
     """

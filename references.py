@@ -1,9 +1,4 @@
-from utils import (
-    calc_embeddings,
-    render_abstract_ranking,
-    distance_between_vector_and_vectors,
-    get_data,
-)
+from utils import calc_embeddings, distance_between_vector_and_vectors, get_data
 
 
 def add_references(ans: str, top_n: int):
@@ -22,7 +17,7 @@ def add_references(ans: str, top_n: int):
     return render_abstract_ranking(abstracts, top_id)
 
 
-def add_ref(ans: str, top_n: int):
+def select_ref(ans: str, top_n: int):
     """
     Add references to a given answer by finding the top_n most similar
     microbiology preprints using their precomputed embeddings.
@@ -32,7 +27,8 @@ def add_ref(ans: str, top_n: int):
     similarities = distance_between_vector_and_vectors(ans_embeddings, abs_embeddings)
     abstracts = get_data("bio_axv_preprints_microbiology")
     top_id = (-similarities).argsort()[:top_n]
-    return render_abstract_ranking(abstracts, top_id)
+    abstracts = abstracts.iloc[list(top_id)]
+    return abstracts
 
 
 def identify_domain(sentence: str):
