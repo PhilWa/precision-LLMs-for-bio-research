@@ -8,32 +8,32 @@ This application is build on the idea of dynamic LLM customization and context-a
 
 ### Key Features:
 
-- Dynamic LLM Type and Parameter Selection
--- Tailor the LLM to suit your research needs by choosing appropriate types and parameters.
+- **Dynamic LLM Type and Parameter Selection.**
+ Tailor the LLM to suit your research needs by choosing appropriate types and parameters.
 
-- Access biorxiv knowledge base
--- Retrieve information from over 66,000 abstracts within the Biorxiv knowledge base.
+- **Access biorxiv knowledge base.**
+ Retrieve information from over 66,000 abstracts within the Biorxiv knowledge base.
 
-- Automatic Paper Proposal
--- The most relevant literature based on your question is selected and shown for you
+- **Automatic Paper Proposal.**
+ The most relevant literature based on your question is selected and shown for you
 
-- Context-Aware Assistance
--- science.pal understands the context of your research, whether it's microbiology or cancer, and scopes the model accordingly.
+- **Context-Aware Assistance.**
+ science.pal understands the context of your research, whether it's microbiology or cancer, and scopes the model accordingly.
 
-- Prompt Enhancement via Small Molecule Knowledge Graph
--- Enrich the biological depth of prompts by integrating information on more than 80,000 small molecules.
+- **Prompt Enhancement via Small Molecule Knowledge Graph.**
+ Enrich the biological depth of prompts by integrating information on more than 80,000 small molecules.
 
 ### Upcoming Features:
 
-- Wider Knowledge Graph Integration
--- Dynamically connect Metabolites, Pathways, and Proteins for a variety of model organisms and provide larger context support.
+- **Wider Knowledge Graph Integration.**
+ Dynamically connect Metabolites, Pathways, and Proteins for a variety of model organisms and provide larger context support.
 
 
-- Upload text or link external resources to provide additional context.
--- Connect your manuscript, PowerPoints, research proposal or the grant you are working on, and science.pal will thoughtfully consider the objectives of your work when delivering responses.
+- **Upload text or link external resources to provide additional context.**
+ Connect your manuscript, PowerPoints, research proposal or the grant you are working on, and science.pal will thoughtfully consider the objectives of your work when delivering responses.
 
 
-Note: Future development will focus on deeper Natural Language Processing (NLP) techniques and Model-First design principles to further enhance the application's capabilities. This development will continue in a private repository after the waitlist starts. The public repository will remain available for reference.
+**Note**: Future development will focus on deeper Natural Language Processing (NLP) techniques and Model-First design principles to further enhance the application's capabilities. This development will continue in a private repository after the waitlist starts. The public repository will remain available for reference.
 
 ## Sneak peak:
 ![](pictures/demo.png)
