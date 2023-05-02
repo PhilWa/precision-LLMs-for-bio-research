@@ -25,6 +25,9 @@ This application is build on the idea of dynamic LLM customization and context-a
 
 ### Upcoming Features:
 
+- **References Tabular Data**
+ Explore research results presented in a tabular format and engage in a discussion with science.pal to gain insights on the next steps, types of analysis, and key findings to extract valuable knowledge and understanding from the data.
+
 - **Wider Knowledge Graph Integration.**
  Dynamically connect Metabolites, Pathways, and Proteins for a variety of model organisms and provide larger context support.
 
@@ -33,7 +36,7 @@ This application is build on the idea of dynamic LLM customization and context-a
  Connect your manuscript, PowerPoints, research proposal or the grant you are working on, and science.pal will thoughtfully consider the objectives of your work when delivering responses.
 
 
-**Note**: Future development will focus on deeper Natural Language Processing (NLP) techniques and Model-First design principles to further enhance the application's capabilities. This development will continue in a private repository after the waitlist starts. The public repository will remain available for reference.
+**Note**: Future development will focus on deeper integration of Natural Language Processing (NLP) techniques and Model-First design principles to further enhance the application's capabilities. The public repository will be sporadically updated with core features for reference purposes only.
 
 ## Sneak peak:
 ![](pictures/demo.png)
