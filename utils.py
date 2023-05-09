@@ -40,9 +40,7 @@ def render_abstract_ranking(df: pd.DataFrame) -> str:
     return output
 
 
-def calc_embeddings(
-    ans: str = "serine is important for cancer metabolism", model_name: str = "bert"
-) -> np.ndarray:
+def calc_embeddings(ans: str = "serine is ..", model_name: str = "bert") -> np.ndarray:
     """
     Calculate the embeddings of a given text using the specified model.
     """
@@ -239,3 +237,9 @@ def create_index_on_pk(db_name: str, table_name: str, pk_name: str) -> None:
     conn.close()
 
     print(f"Index created on primary key '{pk_name}' for table '{table_name}'")
+
+
+def trigger_event(funcation, sentence, keyword):
+    if keyword.lower() not in sentence.lower():
+        return sentence
+    sentence = sentence.replace(keyword, "")

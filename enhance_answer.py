@@ -51,9 +51,7 @@ def escape_fts5_special_chars(search_term: str) -> str:
 
     escaped_search_term = ""
     for char in search_term:
-        if char in fts5_special_chars:
-            escaped_search_term += f'"{char}"'
-        else:
+        if char not in fts5_special_chars:
             escaped_search_term += char
 
     return escaped_search_term

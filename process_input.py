@@ -22,7 +22,7 @@ def process_input(text_input: str) -> str:
     """
 
     if "biogpt" in text_input.lower():
-        text_input = text_input.replace("biogpt", "")
+        text_input = text_input.replace("biogpt", " ")
         abstracts = select_ref(text_input, 2)
         text_input = enrich_metabolite_information(text_input)
         ans = get_answer(text_input)[0].get("generated_text")
