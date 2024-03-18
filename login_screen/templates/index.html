@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Conway's Game of Life</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        html,
+        body,
+        canvas {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 10;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const rows = Math.floor(canvas.width / cellSize);
+        const cols = Math.floor(canvas.height / cellSize);
+        let game_state = Array(rows).fill().map(() => Array(cols).fill(false));
+
+        canvas.addEventListener('click', event => {
+            const x = Math.floor(event.clientX / cellSize);
+            const y = Math.floor(event.clientY / cellSize);
+            $.post('/add_random_group', { x: x, y: y });
+            const group_size = 6;
+            const radius = 3;
+            for (let i = 0; i < group_size; i++) {
+                const r = Math.random() * radius;
+                const angle = Math.random() * 2 * Math.PI;
+                const dx = Math.round(r * Math.cos(angle));
+                const dy = Math.round(r * Math.sin(angle));
+                const nx = (x + dx + rows) % rows;
+                const ny = (y + dy + cols) % cols;
+                game_state[nx][ny] = !game_state[nx][ny];
+            }
+            draw();
+        });
+
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let x = 0; x < rows; x++) {
+                for (let y = 0; y < cols; y++) {
+                    if (game_state[x][y]) {
+                        ctx.fillStyle = 'black';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+        }
+
+        function step() {
+            $.getJSON('/step', data => {
+                game_state = data.new_state;
+                draw();
+                setTimeout(step, 500);
+            });
+        }
+
+        step();
+    </script>
+</body>
+
+</html>

@@ -5,21 +5,21 @@ import os
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///votes.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///votes.db"
+# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# db = SQLAlchemy(app)
 
 
-class Vote(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    input_text = db.Column(db.Text, nullable=False)
-    output_text = db.Column(db.Text, nullable=False)
-    vote = db.Column(db.String(10), nullable=False)
+# class Vote(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    input_text = db.Column(db.Text, nullable=False)
+#    output_text = db.Column(db.Text, nullable=False)
+#    vote = db.Column(db.String(10), nullable=False)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#    db.create_all()
 
 
 @app.route("/")

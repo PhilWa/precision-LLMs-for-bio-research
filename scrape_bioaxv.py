@@ -30,10 +30,10 @@ c.execute(
 )
 
 # Scrape the data and insert into the database
-url_template = "https://api.biorxiv.org/pubs/biorxiv/2020-03-01/2023-03-30/{}"
+url_template = "https://api.biorxiv.org/pubs/biorxiv/2020-03-01/2023-09-10/{}"
 last_index = read_last_index()
 
-max_n = 66763
+max_n = 75252
 for i in tqdm(range(last_index, max_n, 100)):
     url = url_template.format(i)
     try:

@@ -199,6 +199,16 @@ def build_knowledgebase(
 def get_answer(prompt: str = "Glutamine can affect cancer metabolism by") -> List[str]:
     """
     Generate an answer to the given prompt using the BioGPT model.
+
+    Parameters
+    ----------
+    prompt : str
+        The prompt to generate an answer for.
+
+    Returns
+    -------
+    List[str]
+        A list containing the generated answer.
     """
     model = BioGptForCausalLM.from_pretrained("microsoft/biogpt")
     tokenizer = BioGptTokenizer.from_pretrained("microsoft/biogpt")
@@ -239,7 +249,8 @@ def create_index_on_pk(db_name: str, table_name: str, pk_name: str) -> None:
     print(f"Index created on primary key '{pk_name}' for table '{table_name}'")
 
 
-def trigger_event(funcation, sentence, keyword):
+def trigger_event(funcation, sentence: str, keyword: str):
     if keyword.lower() not in sentence.lower():
         return sentence
     sentence = sentence.replace(keyword, "")
+    return funcation(sentence)

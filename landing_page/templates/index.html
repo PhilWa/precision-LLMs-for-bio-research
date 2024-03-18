@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Conway's Game of Life</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="text-box">Click on the emerging pattern</div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const cellSize = 10;
+            const radius = 3;
+            let grid;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const rows = Math.floor(canvas.height / cellSize);
+                const cols = Math.floor(canvas.width / cellSize);
+                grid = createRandomGrid(rows, cols);
+                drawGrid();
+            }
+
+            function createRandomGrid(rows, cols) {
+                return Array.from({ length: rows }, () => Array.from({ length: cols }, () => Math.random() > 0.5 ? 1 : 0));
+            }
+
+            function drawGrid() {
+                for (let y = 0; y < grid.length; y++) {
+                    for (let x = 0; x < grid[y].length; x++) {
+                        ctx.fillStyle = grid[y][x] ? 'black' : 'white';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+
+            function flipCells(x, y) {
+                for (let i = 0; i < 7; i++) {
+                    const randomX = x + Math.floor((Math.random() * 2 * radius) - radius);
+                    const randomY = y + Math.floor((Math.random() * 2 * radius) - radius);
+                    if (randomY >= 0 && randomY < grid.length && randomX >= 0 && randomX < grid[0].length) {
+                        grid[randomY][randomX] = 1 - grid[randomY][randomX];
+                    }
+                }
+                drawGrid();
+            }
+
+            function updateGameState() {
+                fetch('/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ grid })
+                })
+                    .then(response => response.json())
+                    .then(newGrid => {
+                        grid = newGrid;
+                        drawGrid();
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            canvas.addEventListener('click', (event) => {
+                const x = Math.floor(event.clientX / cellSize);
+                const y = Math.floor(event.clientY / cellSize);
+                flipCells(x, y);
+            });
+
+            window.addEventListener('resize', resizeCanvas);
+
+            setInterval(updateGameState, 200);
+            resizeCanvas();
+        });
+
+    </script>
+</body>
+
+</html>

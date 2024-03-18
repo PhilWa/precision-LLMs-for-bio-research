@@ -29,7 +29,7 @@ def chatbot_response(prompt: str, model_params: dict, abstracts: pd.DataFrame):
     add_message_to_history("system", system_message)
 
     # Here we need to inject the abstracts and weave them into the prompt
-    context_instruction = " Restate the question while considering: "
+    context_instruction = "Restate the question while considering: "
     context_information = "you also consider: ".join(
         abstracts.preprint_abstract.to_list()
     )
@@ -59,7 +59,6 @@ def chatbot_response(prompt: str, model_params: dict, abstracts: pd.DataFrame):
     # Now we pretend the chatgpt propmt is actually from the user
     add_message_to_history("user", reply)
     print(reply)
-
     # Prepare input for the API by combining the conversation history
     input_messages = [
         {"role": message["role"], "content": message["content"]}
